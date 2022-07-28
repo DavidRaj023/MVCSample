@@ -9,30 +9,31 @@ namespace MVCSample.Controllers
 {
     public class CustomersController : Controller
     {
+        private ApplicationDbContext _context;
+        public CustomersController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
         // GET: Customers/Index
         public ActionResult Index()
         {
-            var customers = GetCustomers();
+            var customers = _context.Customers.ToList();
             return View(customers);
         }
         // GET: Customers/Details/id
         public ActionResult Details(int id)
         {
-            var customer = GetCustomers().SingleOrDefault(c => c.Id == id);
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
             if (customer == null)
                 return View("Error");
 
             return View(customer);
-        }
-
-
-        private IEnumerable<Customers> GetCustomers()
-        {
-            return new List<Customers>
-           {
-               new Customers { Id = 1, Name = "David"},
-               new Customers { Id = 2, Name = "Kumaru"}
-           };
         }
     }
 
