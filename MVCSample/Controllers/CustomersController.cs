@@ -33,21 +33,23 @@ namespace MVCSample.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(Customers customer)
+        public ActionResult Save(CustomerFormViewModel model)
         {
-            if(customer.Id == 0)
-            {
-                _context.Customers.Add(customer);
-            }
-            else
-            {
-                var customerInDb = _context.Customers.Single(c => c.Id == customer.Id);
+            _context.Customers.Add(model.Customers);
+            _context.SaveChanges();
+            
+            return RedirectToAction("index", "Customers");
+        }
 
-                customerInDb.Name = customer.Name;
-                customerInDb.BirthDate = customer.BirthDate;
-                customerInDb.MembershipTypeId = customer.MembershipTypeId;
-                customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
-            }
+        public ActionResult Update(CustomerFormViewModel model)
+        {
+            var customerInDb = _context.Customers.Single(c => c.Id == model.Customers.Id);
+            
+            customerInDb.Name = model.Customers.Name;
+            customerInDb.BirthDate = model.Customers.BirthDate;
+            customerInDb.MembershipTypeId = model.Customers.MembershipTypeId;
+            customerInDb.IsSubscribedToNewsletter = model.Customers.IsSubscribedToNewsletter;
+            
             _context.SaveChanges();
             return RedirectToAction("index", "Customers");
         }
@@ -79,7 +81,7 @@ namespace MVCSample.Controllers
                 Customers = customer,
                 MembershipTypes = _context.MembershipTypes.ToList()
             };
-            return View("CustomerForm", viewModel);
+            return View("Update", viewModel);
         }
     }
 
