@@ -41,15 +41,28 @@ namespace MVCSample.Controllers
             return RedirectToAction("index", "Customers");
         }
 
+        public ActionResult Edit(int id)
+        {
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            if (customer == null)
+                return HttpNotFound();
+
+            var viewModel = new CustomerFormViewModel
+            {
+                Customers = customer,
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
+            return View("Update", viewModel);
+        }
         public ActionResult Update(CustomerFormViewModel model)
         {
             var customerInDb = _context.Customers.Single(c => c.Id == model.Customers.Id);
-            
+
             customerInDb.Name = model.Customers.Name;
             customerInDb.BirthDate = model.Customers.BirthDate;
             customerInDb.MembershipTypeId = model.Customers.MembershipTypeId;
             customerInDb.IsSubscribedToNewsletter = model.Customers.IsSubscribedToNewsletter;
-            
+
             _context.SaveChanges();
             return RedirectToAction("index", "Customers");
         }
@@ -70,19 +83,7 @@ namespace MVCSample.Controllers
             return View(customer);
         }
 
-        public ActionResult Edit(int id)
-        {
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
-            if (customer == null)
-                return HttpNotFound();
-
-            var viewModel = new CustomerFormViewModel
-            {
-                Customers = customer,
-                MembershipTypes = _context.MembershipTypes.ToList()
-            };
-            return View("Update", viewModel);
-        }
+        
     }
 
 }

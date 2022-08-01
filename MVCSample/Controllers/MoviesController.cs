@@ -1,4 +1,5 @@
 ﻿using MVCSample.Models;
+using MVCSample.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -27,6 +28,25 @@ namespace MVCSample.Controllers
             return View(movies);
         }
 
+        public ActionResult New()
+        {
+            var genre = _context.Genres.ToList();
+            var viewModel = new MovieFormViewModel
+            {
+                Genres = genre
+            };
+            return View("MovieForm", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(MovieFormViewModel model)
+        {
+            _context.Movies.Add(model.Movies);
+            _context.SaveChanges();
+
+            return RedirectToAction("index", "Movies");
+        }
+
         public ActionResult Details(int id)
         {
             var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(c => c.Id == id);
@@ -34,6 +54,33 @@ namespace MVCSample.Controllers
                 return View("Error");
 
             return View(movie);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var movie = _context.Movies.SingleOrDefault(c => c.Id == id);
+            if (movie == null)
+                return HttpNotFound();
+
+            var viewModel = new MovieFormViewModel
+            {
+                Movies = movie,
+                Genres = _context.Genres.ToList()
+            };
+            return View("Update", viewModel);
+        }
+        public ActionResult Update(MovieFormViewModel model)
+        {
+            var movieInDb = _context.Movies.Single(m => m.Id == model.Movies.Id);
+
+            movieInDb.Name = model.Movies.Name;
+            movieInDb.GenreId = model.Movies.GenreId;
+            movieInDb.DateAdded = model.Movies.DateAdded;
+            movieInDb.ReleaseDate = model.Movies.ReleaseDate;
+            movieInDb.NumberInStock = model.Movies.NumberInStock;
+            
+            _context.SaveChanges();
+            return RedirectToAction("index", "Movies");
         }
     }
 
