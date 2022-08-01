@@ -33,9 +33,19 @@ namespace MVCSample.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(CustomerFormViewModel model)
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(Customers customers)
         {
-            _context.Customers.Add(model.Customers);
+            /*if (!ModelState.IsValid)
+            {
+                var viewModel = new CustomerFormViewModel
+                {
+                    Customers = customers,
+                    MembershipTypes = _context.MembershipTypes.ToList()
+                };
+                return View("CustomerForm", viewModel);
+            }*/
+            _context.Customers.Add(customers);
             _context.SaveChanges();
             
             return RedirectToAction("index", "Customers");
