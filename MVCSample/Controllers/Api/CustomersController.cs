@@ -1,4 +1,6 @@
-﻿using MVCSample.Models;
+﻿using AutoMapper;
+using MVCSample.Dtos;
+using MVCSample.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,59 +19,59 @@ namespace MVCSample.Controllers.Api
         }
 
         //GET /api/customers
-        public IEnumerable<Customers> GetCustomers()
+        public IEnumerable<CustomerDto> GetCustomers()
         {
-            return _context.Customers.ToList();
+            return _context.Customers.ToList().Select(Mapper.Map<Customers, CustomerDto>);
         }
 
         //GET /api/customer/1
-        public Customers GetCustomer(int id)
+        public IHttpActionResult GetCustomer(int id)
         {
             var customer = _context.Customers.SingleOrDefault(x => x.Id == id);
             if (customer == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
+                return NotFound();
 
-            return customer;
+            return Ok(Mapper.Map<Customers, CustomerDto>(customer));
         }
 
         //POST /api/customer
         [HttpPost]
-        public Customers CreateCustomers(Customers customer)
+        public IHttpActionResult CreateCustomers(CustomerDto customerDto)
         {
-            if (!ModelState.IsValid)
+            /*if (!ModelState.IsValid)
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
-            }
+            }*/
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var customer = Mapper.Map<CustomerDto, Customers>(customerDto);
             _context.Customers.Add(customer);
             _context.SaveChanges();
-            return customer;
+            customerDto.Id = customer.Id;
+            /*return customerDto;*/
+            return Created(new Uri(Request.RequestUri + "/" + customer.Id), customerDto);
         }
 
         //PUT /api/customers/1
         [HttpPut]
-        public Customers UpdateCustomer(int id, Customers customer)
+        public void UpdateCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
-            var customerInDb = _context.Customers.SingleOrDefault(x => x.Id == id);
+            var customerInDb = _context.Customers.SingleOrDefault(m => m.Id == id);
 
             if (customerInDb == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            customerInDb.Name = customer.Name;
-            customerInDb.BirthDate = customer.BirthDate;
-            customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
-            customerInDb.MembershipTypeId = customer.MembershipTypeId;
+            Mapper.Map(customerDto, customerInDb);
 
             _context.SaveChanges();
-            return customerInDb;
         }
 
         //DELETE /api/customer/1
