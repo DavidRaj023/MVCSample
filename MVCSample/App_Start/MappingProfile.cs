@@ -12,11 +12,14 @@ namespace MVCSample.App_Start
     {
         public MappingProfile()
         {
+            //Domain to Dto
             Mapper.CreateMap<Customers, CustomerDto>();
+            Mapper.CreateMap<Movies, MovieDto>();
+            Mapper.CreateMap<MembershipType, MembershipTypeDto>();
+
+            //Dto to Domain
             Mapper.CreateMap<CustomerDto, Customers>()
                 .ForMember(c => c.Id, opt => opt.Ignore());
-
-            Mapper.CreateMap<Movies, MovieDto>();
             Mapper.CreateMap<MovieDto, Movies>()
                 .ForMember(m => m.Id, opt => opt.Ignore());
         }
