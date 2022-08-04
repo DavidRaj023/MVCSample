@@ -80,8 +80,7 @@ namespace MVCSample.Controllers
         // GET: Customers/Index
         public ActionResult Index()
         {
-            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
-            return View(customers);
+            return View();
         }
         // GET: Customers/Details/id
         public ActionResult Details(int id)
