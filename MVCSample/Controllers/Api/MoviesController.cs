@@ -3,6 +3,7 @@ using MVCSample.Dtos;
 using MVCSample.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -20,10 +21,15 @@ namespace MVCSample.Controllers.Api
         }
 
         //GET /api/movies
-        public IEnumerable<MovieDto> GetMovies()
+        public IHttpActionResult GetMovies()
         {
-            return _context.Movies.ToList().Select(Mapper.Map<Movies, MovieDto>);
+            //return _context.Movies.ToList().Select(Mapper.Map<Movies, MovieDto>);
+            var movieDto = _context.Movies
+                .Include(m => m.Genre)
+                .ToList()
+                .Select(Mapper.Map<Movies, MovieDto>);
 
+            return Ok(movieDto);
         }
 
         //GET /api/movie/1
