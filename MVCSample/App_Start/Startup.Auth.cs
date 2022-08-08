@@ -54,15 +54,15 @@ namespace MVCSample
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "824292308568381",
+               appSecret: "7d8135de30409145726bef389133c53c");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = @"849960905856-0iekpdp3ls7sot7j1g0ogupin156d0f1.apps.googleusercontent.com",
+                ClientSecret = @"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"
+            });
         }
     }
 }
