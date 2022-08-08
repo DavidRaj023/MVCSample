@@ -33,7 +33,7 @@ namespace MVCSample.Controllers.Api
         //GET /api/customer/1
         public IHttpActionResult GetCustomer(int id)
         {
-            var customer = _context.Customers.SingleOrDefault(x => x.Id == id);
+            var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(x => x.Id == id);
             if (customer == null)
                 return NotFound();
 

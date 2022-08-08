@@ -25,9 +25,14 @@ namespace MVCSample.Controllers
         public ActionResult Index()
         {
             var movies = _context.Movies.Include(m => m.Genre).ToList();
-            return View(movies);
+
+            if(User.IsInRole(RoleName.CanManageMovies))
+                return View("List", movies);
+            else
+                return View("ReadOnlyList", movies);
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult New()
         {
             var genre = _context.Genres.ToList();
