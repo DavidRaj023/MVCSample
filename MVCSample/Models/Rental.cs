@@ -14,6 +14,6 @@ namespace MVCSample.Models
         [Required]
         public Movies Movies { get; set; }
         public DateTime DateRented { get; set; }
-        public DateTime DateReturned { get; set; }
+        public DateTime? DateReturned { get; set; }
     }
 }

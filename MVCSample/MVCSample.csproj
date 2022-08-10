@@ -266,6 +266,14 @@
     <Compile Include="Migrations\202208101120490_AddRental.designer.cs">
       <DependentUpon>202208101120490_AddRental.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208101302067_AddNumberAvailableToMovie.cs" />
+    <Compile Include="Migrations\202208101302067_AddNumberAvailableToMovie.designer.cs">
+      <DependentUpon>202208101302067_AddNumberAvailableToMovie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208101304142_AddNullableToDateReturned.cs" />
+    <Compile Include="Migrations\202208101304142_AddNullableToDateReturned.designer.cs">
+      <DependentUpon>202208101304142_AddNullableToDateReturned.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customers.cs" />
@@ -580,6 +588,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208101120490_AddRental.resx">
       <DependentUpon>202208101120490_AddRental.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208101302067_AddNumberAvailableToMovie.resx">
+      <DependentUpon>202208101302067_AddNumberAvailableToMovie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208101304142_AddNullableToDateReturned.resx">
+      <DependentUpon>202208101304142_AddNullableToDateReturned.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

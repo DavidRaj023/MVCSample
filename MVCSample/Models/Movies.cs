@@ -19,5 +19,6 @@ namespace MVCSample.Models
         public DateTime ReleaseDate { get; set; }
         [Display(Name = "Number In Stock")]
         public byte NumberInStock { get; set; }
+        public byte NumberAvailable { get; set; }
     }
 }
