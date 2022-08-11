@@ -21,10 +21,15 @@ namespace MVCSample.Controllers.Api
         }
 
         //GET /api/customers
-        public IHttpActionResult GetCustomers()
+        public IHttpActionResult GetCustomers(string query = null)
         {
-            var customerDtos = _context.Customers
-                .Include(c => c.MembershipType)
+            var cusomersQuery = _context.Customers
+                .Include(c => c.MembershipType);
+
+            if (!string.IsNullOrEmpty(query))
+                cusomersQuery = cusomersQuery.Where(c => c.Name.Contains(query));
+
+            var customerDtos = cusomersQuery
                 .ToList()
                 .Select(Mapper.Map<Customers, CustomerDto>);
             return Ok(customerDtos);

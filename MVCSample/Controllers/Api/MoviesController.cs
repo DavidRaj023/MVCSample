@@ -21,11 +21,18 @@ namespace MVCSample.Controllers.Api
         }
 
         //GET /api/movies
-        public IHttpActionResult GetMovies()
+        public IHttpActionResult GetMovies(string query = null)
         {
             //return _context.Movies.ToList().Select(Mapper.Map<Movies, MovieDto>);
-            var movieDto = _context.Movies
+
+            var moviesQuery = _context.Movies
                 .Include(m => m.Genre)
+                .Where(m => m.NumberAvailable > 0);
+
+            if(!string.IsNullOrEmpty(query))
+                moviesQuery = moviesQuery.Where(m => m.Name.Contains(query));
+
+            var movieDto =moviesQuery
                 .ToList()
                 .Select(Mapper.Map<Movies, MovieDto>);
 
